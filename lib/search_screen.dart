@@ -197,12 +197,21 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Icon(Icons.search_off, size: 64, color: Colors.grey),
+              const SizedBox(height: 16),
               Text(
                 '"${_ctrl.text}"에 대한 결과 없음',
                 style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
+              const SizedBox(height: 8),
+              const Text(
+                '다른 검색어를 시도하거나\n없는 매장을 요청해주세요',
+                style: TextStyle(fontSize: 13, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              FilledButton.icon(
                 onPressed: () {
                   Navigator.push(
                     context,
