@@ -44,6 +44,9 @@ dependencies:
   # Local key-value storage for "최근 검색" history.
   shared_preferences: ^2.5.5
 
+  # 출처 URL 외부 브라우저로 열기 (이미 supabase_flutter 의존성으로 들어와 있지만 명시).
+  url_launcher: ^6.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

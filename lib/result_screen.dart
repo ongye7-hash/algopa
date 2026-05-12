@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'db.dart';
+
+Future<void> _openSourceUrl(BuildContext context, String url) async {
+  final uri = Uri.tryParse(url);
+  if (uri != null) {
+    final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (ok) return;
+  }
+  await Clipboard.setData(ClipboardData(text: url));
+  if (!context.mounted) return;
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('브라우저를 열 수 없어 URL을 복사했습니다'),
+      duration: Duration(seconds: 2),
+    ),
+  );
+}
 
 class ResultScreen extends StatefulWidget {
   final Brand brand;
@@ -122,24 +139,33 @@ class _DiscountCard extends StatelessWidget {
             if ((d.sourceUrl ?? '').isNotEmpty) ...[
               const SizedBox(height: 8),
               InkWell(
-                onTap: () {
+                onTap: () => _openSourceUrl(context, d.sourceUrl!),
+                onLongPress: () {
                   Clipboard.setData(ClipboardData(text: d.sourceUrl!));
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('출처 URL 복사됨'),
+                      content: Text('출처 URL 복사됨 (길게 눌러 복사)'),
                       duration: Duration(seconds: 1),
                     ),
                   );
                 },
-                child: Text(
-                  '출처: ${d.sourceUrl}',
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                    fontSize: 12,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                child: Row(
+                  children: [
+                    const Icon(Icons.open_in_new, size: 14, color: Colors.blue),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        '출처: ${d.sourceUrl}',
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                          fontSize: 12,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
