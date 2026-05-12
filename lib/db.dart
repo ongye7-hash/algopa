@@ -73,3 +73,20 @@ Future<List<Discount>> discountsByBrand(String brandId) async {
       .map((r) => Discount.fromJson(r as Map<String, dynamic>))
       .toList();
 }
+
+const List<String> kBrandCategories = [
+  '외식', '카페', '쇼핑/생활', '문화/레저', '미용/생활서비스',
+];
+
+Future<void> submitBrandRequest({
+  required String brandName,
+  String? category,
+  String? contact,
+}) async {
+  final c = contact?.trim();
+  await _client.from('brand_requests').insert({
+    'brand_name': brandName.trim(),
+    'category': category,
+    'contact': (c == null || c.isEmpty) ? null : c,
+  });
+}

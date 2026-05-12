@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'db.dart';
+import 'request_screen.dart';
 import 'result_screen.dart';
 
 const _kRecentKey = 'recent_searches';
@@ -190,9 +191,11 @@ class _SearchScreenState extends State<SearchScreen> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('요청 접수 (Phase 2 연결 예정). 24시간 내 알림.'),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          RequestScreen(prefillName: _ctrl.text.trim()),
                     ),
                   );
                 },
