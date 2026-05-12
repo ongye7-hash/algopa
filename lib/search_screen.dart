@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'db.dart';
+import 'error.dart';
 import 'request_screen.dart';
 import 'result_screen.dart';
 
@@ -43,7 +44,13 @@ class _SearchScreenState extends State<SearchScreen> {
       if (!mounted) return;
       setState(() => _recent = recent);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('추천 검색어 로드 실패: $e')),
+        SnackBar(
+          content: Text(humanizeError(e)),
+          action: SnackBarAction(
+            label: '다시 시도',
+            onPressed: _loadInitialData,
+          ),
+        ),
       );
     }
   }
@@ -80,7 +87,13 @@ class _SearchScreenState extends State<SearchScreen> {
       if (!mounted) return;
       setState(() => _searching = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('검색 실패: $e')),
+        SnackBar(
+          content: Text(humanizeError(e)),
+          action: SnackBarAction(
+            label: '다시 시도',
+            onPressed: () => _runSearch(q),
+          ),
+        ),
       );
     }
   }

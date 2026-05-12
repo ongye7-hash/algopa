@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'db.dart';
+import 'error.dart';
 
 class RequestScreen extends StatefulWidget {
   final String? prefillName;
@@ -61,7 +62,13 @@ class _RequestScreenState extends State<RequestScreen> {
       if (!mounted) return;
       setState(() => _submitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('요청 실패: $e')),
+        SnackBar(
+          content: Text(humanizeError(e)),
+          action: SnackBarAction(
+            label: '다시 시도',
+            onPressed: _submit,
+          ),
+        ),
       );
     }
   }

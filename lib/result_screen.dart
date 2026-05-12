@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'db.dart';
+import 'error.dart';
 
 Future<void> _openSourceUrl(BuildContext context, String url) async {
   final uri = Uri.tryParse(url);
@@ -48,8 +49,28 @@ class _ResultScreenState extends State<ResultScreen> {
           if (snap.hasError) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text('할인 정보 로드 실패: ${snap.error}'),
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.cloud_off, size: 48, color: Colors.grey),
+                    const SizedBox(height: 12),
+                    Text(
+                      humanizeError(snap.error!),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        setState(() {
+                          _future = discountsByBrand(widget.brand.id);
+                        });
+                      },
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('다시 시도'),
+                    ),
+                  ],
+                ),
               ),
             );
           }
