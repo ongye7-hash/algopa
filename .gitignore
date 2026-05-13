@@ -48,5 +48,11 @@ app.*.map.json
 .env
 .env.*.local
 
+# Android release signing — 절대 commit 금지
+**/android/key.properties
+**/android/app/key.properties
+**/*.jks
+**/*.keystore
+
 # Local install logs
 /scripts/*.log

@@ -1,0 +1,15 @@
+# Android release signing 자리표시자.
+# 실제 값은 android/key.properties (gitignored)에 채워서 저장.
+# 이 파일은 commit OK — 다른 환경에서 clone 시 가이드용.
+#
+# 생성 방법:
+#   1. keystore 생성:
+#      keytool -genkey -v -keystore android/app/upload-keystore.jks \
+#              -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+#   2. 아래 값을 채워서 android/key.properties 로 복사·저장
+#   3. flutter build appbundle --release
+
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=upload
+storeFile=app/upload-keystore.jks
