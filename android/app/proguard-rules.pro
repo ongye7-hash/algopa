@@ -35,3 +35,19 @@
 # ===== shared_preferences / url_launcher / flutter_dotenv =====
 # Flutter Plugin 시스템이 자동 처리하나 미사용 클래스 제거 시 발생 가능한 경고 억제
 -dontwarn io.flutter.plugins.**
+
+# ===== Google Play Core (deferred component) =====
+# 우리 앱은 deferred component 사용 X. Flutter Engine이 reference만 가지고 있어
+# R8이 missing class 에러로 처리. dontwarn으로 무시.
+# (build/app/outputs/mapping/release/missing_rules.txt 자동 생성 내용 적용)
+-dontwarn com.google.android.play.core.splitcompat.SplitCompatApplication
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallException
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallManager
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallRequest$Builder
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallRequest
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallSessionState
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
+-dontwarn com.google.android.play.core.tasks.OnFailureListener
+-dontwarn com.google.android.play.core.tasks.OnSuccessListener
+-dontwarn com.google.android.play.core.tasks.Task
