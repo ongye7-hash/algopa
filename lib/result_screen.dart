@@ -5,6 +5,16 @@ import 'db.dart';
 import 'error.dart';
 import 'theme.dart';
 
+/// rate 텍스트(자유 서술)에서 첫 정수만 추출 — 정렬용.
+/// 콤마 제거 후 매칭. 추출 실패는 -1 (정렬 시 맨 뒤).
+/// 의미적 할인율과 정확히 같진 않지만(예: "별 12개 적립" → 12) MVP fallback.
+int _extractFirstNumber(String? text) {
+  if (text == null) return -1;
+  final cleaned = text.replaceAll(',', '');
+  final m = RegExp(r'\d+').firstMatch(cleaned);
+  return m == null ? -1 : (int.tryParse(m.group(0)!) ?? -1);
+}
+
 Future<void> _openSourceUrl(BuildContext context, String url) async {
   final uri = Uri.tryParse(url);
   if (uri != null) {
@@ -75,7 +85,13 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
             );
           }
-          final list = snap.data ?? [];
+          final list = List<Discount>.from(snap.data ?? [])
+            ..sort((a, b) {
+              final ra = _extractFirstNumber(a.rate);
+              final rb = _extractFirstNumber(b.rate);
+              if (ra != rb) return rb.compareTo(ra); // DESC: 큰 숫자 먼저
+              return a.provider.compareTo(b.provider); // tiebreaker
+            });
           if (list.isEmpty) {
             return const Center(child: Text('등록된 할인 정보가 없음'));
           }
