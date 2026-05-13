@@ -15,6 +15,21 @@ int _extractFirstNumber(String? text) {
   return m == null ? -1 : (int.tryParse(m.group(0)!) ?? -1);
 }
 
+final _telcoRe = RegExp(r'SKT|KT|LG U?\+?|통신사');
+
+/// 할인 카테고리 ranking — 작을수록 위에 노출.
+/// 1: 카드사  2: 통신사  3: 브랜드 멤버십  4: 쿠폰  5: 기타
+/// 첫 매치 우선 (예: "카드사 시즌 쿠폰" → 카드사 1, 쿠폰 4 X)
+int _categoryRank(Discount d) {
+  final p = d.provider;
+  final t = d.type;
+  if (p.contains('카드') || t.contains('카드')) return 1;
+  if (_telcoRe.hasMatch(p) || t.contains('통신사')) return 2;
+  if (p.startsWith('브랜드')) return 3;
+  if (t.contains('쿠폰')) return 4;
+  return 5;
+}
+
 Future<void> _openSourceUrl(BuildContext context, String url) async {
   final uri = Uri.tryParse(url);
   if (uri != null) {
@@ -87,10 +102,16 @@ class _ResultScreenState extends State<ResultScreen> {
           }
           final list = List<Discount>.from(snap.data ?? [])
             ..sort((a, b) {
+              // 1차: 카테고리(카드사 → 통신사 → 멤버십 → 쿠폰 → 기타)
+              final ca = _categoryRank(a);
+              final cb = _categoryRank(b);
+              if (ca != cb) return ca.compareTo(cb); // ASC
+              // 2차: 그룹 내 할인 큰 순
               final ra = _extractFirstNumber(a.rate);
               final rb = _extractFirstNumber(b.rate);
-              if (ra != rb) return rb.compareTo(ra); // DESC: 큰 숫자 먼저
-              return a.provider.compareTo(b.provider); // tiebreaker
+              if (ra != rb) return rb.compareTo(ra); // DESC
+              // 3차: provider 알파벳순
+              return a.provider.compareTo(b.provider);
             });
           if (list.isEmpty) {
             return const Center(child: Text('등록된 할인 정보가 없음'));
