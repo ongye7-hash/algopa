@@ -1,6 +1,6 @@
 # ALGOPA 진행 상태
 
-마지막 업데이트: 2026-05-13
+마지막 업데이트: 2026-05-14
 
 ## 현재 마일스톤
 - **v0.2.0 출시** (https://github.com/ongye7-hash/algopa/releases/tag/v0.2.0)
@@ -16,14 +16,16 @@
 - 출시 자산: app_icon (1024 Indigo+A) + flutter_launcher_icons + flutter_native_splash 적용
 - legal: docs/legal/{privacy-policy,terms-of-service}.md (시행일 2026-05-15)
 - git/GitHub: tag v0.1.0-mvp, v0.2.0 + GitHub release 둘 다 등록
+- **GitHub Pages 활성화 완료** (2026-05-14)
+  - https://ongye7-hash.github.io/algopa/legal/privacy-policy
+  - https://ongye7-hash.github.io/algopa/legal/terms-of-service
 
 ## 지금 해야 할 것 (다음 세션 후보)
-1. **GitHub Pages 활성화** — Settings → Pages → Source: main / docs
-   • 결과 URL: https://ongye7-hash.github.io/algopa/legal/{privacy-policy,terms-of-service}
-2. **Android release build + 서명** — `flutter build appbundle --release` + key.properties
-3. **Play Console 등록 준비** — 스크린샷·설명문·카테고리·콘텐츠 등급
-4. **외식 외 카테고리 시트 확장** — 별도 트랙 (Claude.ai 웹에서 시트 작업)
-5. **iOS 빌드** (Mac 환경 필요)
+1. **Play Console 등록** — 사용자 신원 확인 진행 중 (별도 트랙, 사용자 작업)
+2. **Android release APK 빌드** — 서명(key.properties + keystore) + ProGuard + `flutter build appbundle --release`
+3. **Store listing 자료 준비** — 스크린샷(폰/태블릿), 짧은 설명(80자), 전체 설명, 키워드, 카테고리, 콘텐츠 등급 설문
+4. **외식 외 카테고리 시트 확장** — 별도 트랙 (Claude.ai 웹 시트 작업 → CSV export → csv_to_sql.py → Supabase TRUNCATE+재적재)
+5. **iOS 빌드** — Mac 환경 필요
 
 ## 주요 파일/경로
 - 프로젝트 루트: `c:\Users\user\Desktop\ALGOPA\`
@@ -46,4 +48,4 @@
 - `is_stackable` NULL 일괄 (Phase 2에서 brands.overlap_note로 이전 예정)
 - 자동 알림 X — brand_requests 처리는 운영자가 Supabase 대시보드 + 수동 contact
 - iOS 미검증 (Mac 환경 필요)
-- GitHub Pages 활성화는 사용자가 GitHub 웹에서 직접 설정 (마지막 미완)
+- release 서명 미설정 (debug build만 검증, key.properties 등록 필요)
