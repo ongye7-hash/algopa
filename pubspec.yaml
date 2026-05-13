@@ -61,6 +61,9 @@ dev_dependencies:
   # Android/iOS launcher icon 자동 생성 (assets/icon/app_icon.png 기반)
   flutter_launcher_icons: ^0.14.0
 
+  # 네이티브 스플래시 화면 (Android/iOS) 자동 생성
+  flutter_native_splash: ^2.4.0
+
 flutter_launcher_icons:
   android: true
   ios: true
@@ -69,6 +72,14 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   adaptive_icon_background: "#4263EB"
   adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+
+flutter_native_splash:
+  color: "#4263EB"
+  image: assets/icon/app_icon_foreground.png
+  android_12:
+    color: "#4263EB"
+    image: assets/icon/app_icon_foreground.png
+    icon_background_color: "#4263EB"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
