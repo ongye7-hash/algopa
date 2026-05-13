@@ -90,3 +90,21 @@ Future<void> submitBrandRequest({
     'contact': (c == null || c.isEmpty) ? null : c,
   });
 }
+
+/// 검색 로깅 — fire-and-forget. 실패 시 silent (사용자 UX 차단 X).
+/// 0005_search_logs 마이그레이션 미적용 시 PostgrestException → catch에서 무시.
+Future<void> logSearch({
+  required String query,
+  required int resultCount,
+  String? matchedBrandId,
+}) async {
+  try {
+    await _client.from('search_logs').insert({
+      'query': query.trim(),
+      'result_count': resultCount,
+      'matched_brand_id': matchedBrandId,
+    });
+  } catch (_) {
+    // 로깅 실패는 사용자 경험에 영향 없도록 무시.
+  }
+}

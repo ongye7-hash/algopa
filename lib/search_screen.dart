@@ -83,6 +83,8 @@ class _SearchScreenState extends State<SearchScreen> {
         _searching = false;
         _searchedOnce = true;
       });
+      // fire-and-forget: 익명 집계 (실패 silent)
+      unawaited(logSearch(query: q, resultCount: results.length));
     } catch (e) {
       if (!mounted) return;
       setState(() => _searching = false);
