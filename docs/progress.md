@@ -3,40 +3,47 @@
 마지막 업데이트: 2026-05-13
 
 ## 현재 마일스톤
-- **v0.1.0-mvp 출시** (https://github.com/ongye7-hash/algopa/releases/tag/v0.1.0-mvp)
-- MVP 화면 3개 모두 동작 검증 (Chrome web + Z Flip3 5G 실기기)
+- **v0.2.0 출시** (https://github.com/ongye7-hash/algopa/releases/tag/v0.2.0)
+- 브랜드 시스템 + 출시 인프라 정비 완료
+- v0.1.0-mvp(검색→결과 사이클) 위에 디자인·아이콘·스플래시·legal 추가
 
 ## 완료된 작업
-- 환경: Flutter 3.41.9 + Android Studio + cmdline-tools (auto install) + JAVA_HOME/ANDROID_HOME
-- Supabase 프로젝트 (Seoul ap-northeast-2) + brands(10) + discounts(59) + brand_requests
+- 환경: Flutter 3.41.9 + Android Studio + cmdline-tools (auto install)
+- Supabase 프로젝트 (Seoul) + brands(10) + discounts(59) + brand_requests
 - Flutter app: 검색·결과·추가 요청 화면 + Supabase 연결 + shared_preferences
-- git/GitHub: private repo `ongye7-hash/algopa` (main), tag `v0.1.0-mvp`
+- 디자인: Material 3 (#4263EB Indigo), Pretendard 4 weight, Card/Input/CTA 일괄 테마
+- UX: url_launcher (외부 브라우저), 네트워크 에러 친화 메시지 + 재시도, 빈 결과 안내 강화
+- 출시 자산: app_icon (1024 Indigo+A) + flutter_launcher_icons + flutter_native_splash 적용
+- legal: docs/legal/{privacy-policy,terms-of-service}.md (시행일 2026-05-15)
+- git/GitHub: tag v0.1.0-mvp, v0.2.0 + GitHub release 둘 다 등록
 
 ## 지금 해야 할 것 (다음 세션 후보)
-1. **Android release build + 서명** — `flutter build apk --release` + key.properties 셋업
-2. **외식/쇼핑/문화/미용 카테고리 시트 확장** — 별도 트랙 (Claude.ai 웹에서 시트 작업 → CSV export → `python scripts/csv_to_sql.py` → 0002/0003 재생성 → Supabase TRUNCATE+재적재)
-3. **iOS 빌드** (Mac 클라우드 또는 macOS 환경 필요)
-4. **디자인 시스템 적용** — `C:\Users\user\Downloads\design-system-showcase.jsx` 참고
+1. **GitHub Pages 활성화** — Settings → Pages → Source: main / docs
+   • 결과 URL: https://ongye7-hash.github.io/algopa/legal/{privacy-policy,terms-of-service}
+2. **Android release build + 서명** — `flutter build appbundle --release` + key.properties
+3. **Play Console 등록 준비** — 스크린샷·설명문·카테고리·콘텐츠 등급
+4. **외식 외 카테고리 시트 확장** — 별도 트랙 (Claude.ai 웹에서 시트 작업)
+5. **iOS 빌드** (Mac 환경 필요)
 
 ## 주요 파일/경로
 - 프로젝트 루트: `c:\Users\user\Desktop\ALGOPA\`
-- Flutter 코드: `lib/{main,db,search_screen,result_screen,request_screen}.dart`
+- Flutter 코드: `lib/{main,db,error,theme,search_screen,result_screen,request_screen}.dart`
 - 마이그레이션: `supabase/migrations/0001~0004_*.sql`
-- CSV→SQL 스크립트: `scripts/csv_to_sql.py` (UTF-8/CP949 자동 감지)
-- 시드 CSV: `알고파.초기시트.260512.csv`
-- Supabase 가이드: `supabase/SETUP.md`
-- bundle id: `kr.algopa.algopa`
+- 시드 CSV: `알고파.초기시트.260512.csv` (UTF-8 또는 CP949 자동 감지)
+- 자산: `assets/fonts/Pretendard-*.otf`, `assets/icon/app_icon{,_foreground}.png`
+- legal: `docs/legal/*.md`
+- bundle id: `kr.algopa.algopa`, version: `0.1.0+1`
 
 ## 환경변수/키 상태
-- `.env` (gitignored): `SUPABASE_URL`, `SUPABASE_ANON_KEY` (publishable 형식)
-- `.env.example` (committed): 자리표시자 템플릿
-- 시스템: `JAVA_HOME` = Android Studio JBR, `ANDROID_HOME` = `~/AppData/Local/Android/Sdk`
+- `.env` (gitignored): `SUPABASE_URL`, `SUPABASE_ANON_KEY` (sb_publishable_*)
+- `JAVA_HOME` = Android Studio JBR, `ANDROID_HOME` = AppData/Local/Android/Sdk
 
 ## 외부 시스템
-- Supabase 대시보드 (anon key는 코드/UI에 노출, service_role은 운영자만 — brand_requests 조회용)
-- GitHub: `ongye7-hash/algopa` (private)
+- Supabase 대시보드 — anon key는 코드, service_role은 운영자 (brand_requests 처리)
+- GitHub: `ongye7-hash/algopa` (private), tag v0.1.0-mvp / v0.2.0
 
 ## 알려진 미해결 사항
-- `is_stackable` 컬럼: 모든 행 NULL (Phase 2에서 brands.overlap_note로 이전 예정)
-- 자동 알림 X — brand_requests 처리는 운영자가 Supabase 대시보드 + 수동 contact 발송
-- Web/Android만 검증, iOS 미검증
+- `is_stackable` NULL 일괄 (Phase 2에서 brands.overlap_note로 이전 예정)
+- 자동 알림 X — brand_requests 처리는 운영자가 Supabase 대시보드 + 수동 contact
+- iOS 미검증 (Mac 환경 필요)
+- GitHub Pages 활성화는 사용자가 GitHub 웹에서 직접 설정 (마지막 미완)
