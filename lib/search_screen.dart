@@ -17,6 +17,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final _ctrl = TextEditingController();
+  final FocusNode _searchFocus = FocusNode();
   Timer? _debounce;
   List<Brand> _results = [];
   List<Brand> _recommended = [];
@@ -28,6 +29,11 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     _loadInitialData();
+    // autofocus: true 만으로는 일부 Android 기기에서 IME 자동 등장이 누락됨.
+    // 첫 프레임 후 명시 requestFocus 보장.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _searchFocus.requestFocus();
+    });
   }
 
   Future<void> _loadInitialData() async {
@@ -143,6 +149,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void dispose() {
     _debounce?.cancel();
     _ctrl.dispose();
+    _searchFocus.dispose();
     super.dispose();
   }
 
@@ -157,6 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
             padding: const EdgeInsets.all(12),
             child: TextField(
               controller: _ctrl,
+              focusNode: _searchFocus,
               autofocus: true,
               decoration: InputDecoration(
                 hintText: '오늘 어디가세요? 예: 스타벅스, 아웃백',
