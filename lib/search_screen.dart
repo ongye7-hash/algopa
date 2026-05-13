@@ -157,7 +157,7 @@ class _SearchScreenState extends State<SearchScreen> {
               controller: _ctrl,
               autofocus: true,
               decoration: InputDecoration(
-                hintText: '매장명 입력 (예: 스타벅스)',
+                hintText: '오늘 어디가세요? 예: 스타벅스, 아웃백',
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: hasQuery

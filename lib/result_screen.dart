@@ -190,7 +190,10 @@ class _DiscountCard extends StatelessWidget {
             if ((d.sourceUrl ?? '').isNotEmpty) ...[
               const SizedBox(height: 10),
               InkWell(
-                onTap: () => _openSourceUrl(context, d.sourceUrl!),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _openSourceUrl(context, d.sourceUrl!);
+                },
                 onLongPress: () {
                   Clipboard.setData(ClipboardData(text: d.sourceUrl!));
                   ScaffoldMessenger.of(context).showSnackBar(
