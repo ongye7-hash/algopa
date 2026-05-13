@@ -68,7 +68,7 @@ Future<List<Discount>> discountsByBrand(String brandId) async {
       .from('discounts')
       .select('id, provider, type, rate, limit_amount, conditions, source_url')
       .eq('brand_id', brandId)
-      .order('provider', ascending: true);
+      .order('id', ascending: true);
   return (rows as List)
       .map((r) => Discount.fromJson(r as Map<String, dynamic>))
       .toList();
