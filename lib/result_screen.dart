@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'db.dart';
 import 'error.dart';
+import 'theme.dart';
 
 Future<void> _openSourceUrl(BuildContext context, String url) async {
   final uri = Uri.tryParse(url);
@@ -87,7 +88,9 @@ class _ResultScreenState extends State<ResultScreen> {
                     Text(
                       '총 ${list.length}건',
                       style: const TextStyle(
-                          fontSize: 13, color: Colors.grey),
+                        fontSize: 13,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -96,7 +99,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 child: ListView.separated(
                   padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
                   itemCount: list.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (_, i) => _DiscountCard(d: list[i]),
                 ),
               ),
@@ -116,49 +119,76 @@ class _DiscountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Chip(
-                  label: Text(
-                    d.provider,
-                    style: const TextStyle(fontSize: 11),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                  visualDensity: VisualDensity.compact,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  child: Text(
+                    d.provider,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+                  ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     d.type,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
               ],
             ),
             if ((d.rate ?? '').isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(d.rate!),
+              const SizedBox(height: 10),
+              Text(
+                d.rate!,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textPrimary,
+                  height: 1.5,
+                ),
+              ),
             ],
             if ((d.limitAmount ?? '').isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
               Text(
                 '한도: ${d.limitAmount}',
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
             if ((d.conditions ?? '').isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 '조건: ${d.conditions}',
-                style: const TextStyle(fontSize: 13),
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
               ),
             ],
             if ((d.sourceUrl ?? '').isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               InkWell(
                 onTap: () => _openSourceUrl(context, d.sourceUrl!),
                 onLongPress: () {
@@ -172,14 +202,19 @@ class _DiscountCard extends StatelessWidget {
                 },
                 child: Row(
                   children: [
-                    const Icon(Icons.open_in_new, size: 14, color: Colors.blue),
+                    const Icon(
+                      Icons.open_in_new,
+                      size: 14,
+                      color: AppColors.primary,
+                    ),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         '출처: ${d.sourceUrl}',
                         style: const TextStyle(
-                          color: Colors.blue,
+                          color: AppColors.primary,
                           decoration: TextDecoration.underline,
+                          decorationColor: AppColors.primary,
                           fontSize: 12,
                         ),
                         maxLines: 2,
