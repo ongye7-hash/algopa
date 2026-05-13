@@ -99,12 +99,27 @@ def main():
             continue
         no = r[0].strip()
         name = normalize(r[1])
+        dtype = normalize(r[4]) or ''
+        rate = normalize(r[5])
+        target = normalize(r[6])
+        limit_amt = normalize(r[7])
+        period = normalize(r[9])
         src = normalize(r[10])
+        note = normalize(r[12]) if len(r) > 12 else None
+
         if name is None:
             skipped.append((no, "missing 브랜드"))
             continue
         if src is None:
             skipped.append((no, "missing 출처 URL"))
+            continue
+        # 정제 룰 1: dtype 또는 비고에 "미게재" — 정보 부재 마커
+        if '미게재' in dtype or (note is not None and '미게재' in note):
+            skipped.append((no, f"미게재 패턴: {name} / dtype={dtype} / note={note}"))
+            continue
+        # 정제 룰 2: rate/target/limit/period 모두 NULL — 실질 정보 0
+        if rate is None and target is None and limit_amt is None and period is None:
+            skipped.append((no, f"실질 정보 0: {name} / {dtype}"))
             continue
         valid.append((r, name))
 
